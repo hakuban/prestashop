@@ -13,29 +13,57 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 public class wrongCredentialsTest {
 
 	WebDriver driver;
-	
-@BeforeMethod
-public void setUp() {
-	WebDriverManager.chromedriver().setup();
-	driver=new ChromeDriver();
-	driver.manage().window().fullscreen();
-	driver.get("http://automationpractice.com");
-}
 
-@Test
-public void wrongLogin() {
-	driver.findElement(By.cssSelector(".login")).click();
-	driver.findElement(By.cssSelector("#email")).sendKeys("hangke@gmai.com");
-	driver.findElement(By.cssSelector("#passwd")).sendKeys("12345");
-	driver.findElement(By.cssSelector("#SubmitLogin")).click();
-	Assert.assertTrue(driver.getPageSource().contains("Authentication failed"));
-	
-}
+	@BeforeMethod
+	public void setUp() {
+		WebDriverManager.chromedriver().setup();
+		driver = new ChromeDriver();
+		driver.manage().window().fullscreen();
+		driver.get("http://automationpractice.com");
+	}
 
-@AfterMethod
-public void tearDown() {
-	driver.close();
-}
+	@Test
+	public void wrongLogin() {
+		driver.findElement(By.cssSelector(".login")).click();
+		driver.findElement(By.cssSelector("#email")).sendKeys("hangke@gmai.com");
+		driver.findElement(By.cssSelector("#passwd")).sendKeys("12345");
+		driver.findElement(By.cssSelector("#SubmitLogin")).click();
+		Assert.assertTrue(driver.getPageSource().contains("Authentication failed"));
+
+	}
+
+	@Test
+	public void invalidEmailTest() {
+		driver.findElement(By.cssSelector(".login")).click();
+		driver.findElement(By.cssSelector("#email")).sendKeys("hangke");
+		driver.findElement(By.cssSelector("#passwd")).sendKeys("12345");
+		driver.findElement(By.cssSelector("#SubmitLogin")).click();
+		Assert.assertTrue(driver.getPageSource().contains("Invalid email address"));
+
+	}
+
+	@Test
+	public void blankEmailTest() {
+		driver.findElement(By.cssSelector(".login")).click();
+		driver.findElement(By.cssSelector("#email")).sendKeys("");
+		driver.findElement(By.cssSelector("#passwd")).sendKeys("12345");
+		driver.findElement(By.cssSelector("#SubmitLogin")).click();
+		Assert.assertTrue(driver.getPageSource().contains("An email address required"));
+	}
+
+	@Test
+	public void blanckPassword() {
+		driver.findElement(By.cssSelector(".login")).click();
+		driver.findElement(By.cssSelector("#email")).sendKeys("hangke@gmai.com");
+		driver.findElement(By.cssSelector("#passwd")).sendKeys("");
+		driver.findElement(By.cssSelector("#SubmitLogin")).click();
+		Assert.assertTrue(driver.getPageSource().contains("Password is required"));
+
+	}
+
+	@AfterMethod
+	public void tearDown() {
+		driver.close();
+	}
 
 }
-
